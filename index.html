@@ -13,14 +13,16 @@
     <header>
         <nav>
             <h3>memegen</h3>
-            <div class="menu-icon">
+            <div class="menu-icon" onclick="onMenuClick()">
                 <span></span>
                 <span></span>
                 <span></span>
             </div>
         </nav>
     </header>
-    <main class="gallery"></main>
+    <main class="gallery hidden">
+        <section class="img-container"></section>
+    </main>
     <main class="editor">
         <canvas id="canvas" width="250px" height="250px"></canvas>
         <section class="dashboard">
@@ -31,6 +33,7 @@
 
     <script src='service.js'></script>
     <script src='main.js'></script>
+    <script src='galleryController.js'></script>
 </body>
 
 </html>

@@ -2,6 +2,7 @@
 
 function onInit() {
     renderMeme()
+    renderGallery()
 
 }
 
@@ -58,4 +59,14 @@ function renderText(canvas, ctx, meme) {
 function onUserType(event) {
     let txt = event.target.value
     setLineTxt(txt)
+}
+
+function onMenuClick() {
+    //NOW: toggles between pages
+    //TODO: set full functionality
+    const gallery = document.querySelector('.gallery')
+    const editor = document.querySelector('.editor')
+
+    gallery.classList.toggle('hidden')
+    editor.classList.toggle('hidden')
 }
