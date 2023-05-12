@@ -6,29 +6,86 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Page Title</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='style.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='./style/main.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='./style/editor.css'>
 </head>
 
 <body onload="onInit()">
-    <header>
-        <nav>
-            <h3>memegen</h3>
-            <div class="menu-icon" onclick="onMenuClick()">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </nav>
-    </header>
-    <main class="gallery hidden">
+
+    <section class="gallery hidden">
         <section class="img-container"></section>
-    </main>
-    <main class="editor">
-        <canvas id="canvas" width="250px" height="250px"></canvas>
-        <section class="dashboard">
-            <input type="text" oninput="onUserType(event)" value="lorem ipsum">
-        </section>
-    </main>
+    </section>
+
+    <section class="editor">
+
+        <header>
+            <nav>
+                <img class="logo" src="./assets/logo/LOGO.png" alt="">
+                <ul>
+                    <li><a href="#"></a>Gallery</li>
+                    <li class="pressed"><a href="#"></a>Editor</li>
+                    <li><a href="#"></a>Saved Memes</li>
+                    <li><a href="#"></a>About</li>
+                </ul>
+                <!-- <div class="menu-icon" onclick="onMenuClick()"> -->
+                <!-- <span></span> -->
+                <!-- <span></span> -->
+                <!-- <span></span> -->
+                <!-- </div> -->
+            </nav>
+        </header>
+
+        <main>
+            <canvas id="canvas"></canvas>
+
+            <section class="dashboard">
+                <input type="text" oninput="onUserType(event)">
+                <div class="square-button-container">
+                    <button class="square-button" onclick="onSwitchLine()"><img src="./assets/icon/switch-arrows.png"
+                            alt=""></button>
+                    <button class="square-button" onclick="onAddLine()"><img src="./assets/icon/add.png"
+                            alt=""></button>
+                    <button class="square-button"><img src="./assets/icon/trash.png" alt=""></button>
+                    <button class="square-button" onclick="onIncreaseFont()"><img src="./assets/icon/increase-font.png"
+                            alt=""></button>
+                    <button class="square-button" onclick="onDecreaseFont()"><img src="./assets/icon/decrease-font.png"
+                            alt=""></button>
+                    <button class="square-button" onclick="onAlignTxt('left')"><img src="./assets/icon/align-left.png"
+                            alt=""></button>
+                    <button class="square-button" onclick="onAlignTxt('center')"><img
+                            src="./assets/icon/align-center.png" alt=""></button>
+                    <button class="square-button" onclick="onAlignTxt('right')"><img src="./assets/icon/align-right.png"
+                            alt=""></button>
+                    <button class="square-button" onclick="showFillColorPalate()">
+                        <input type="color" class="fill" oninput="onChangeFillColor(event)">
+                        <img src="./assets/icon/paint-brush.png" alt="">
+                    </button>
+                    <button class="square-button" onclick="showStrokeColorPalate()">
+                        <input type="color" class="stroke" oninput="onChangeStrokeColor(event)">
+                        <img src="./assets/icon/text-stroke.png" alt="">
+                    </button>
+                </div>
+                <div class="download-bar">
+                    <button>font</button>
+                    <button>Share</button>
+                    <button>Download</button>
+                </div>
+            </section>
+        </main>
+
+
+        <footer>
+
+        </footer>
+
+    </section>
+
+    <section class="memes">
+
+    </section>
+    <!-- <main class="memes hidden"> -->
+
+    <!-- </main> -->
 
 
     <script src='service.js'></script>
