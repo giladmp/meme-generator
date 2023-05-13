@@ -14,6 +14,6 @@ function renderGallery() {
 function onSelectImg(imgId) {
     setImg(imgId)
     renderMeme()
-    onMenuClick()
+    showEditor()
 }
 

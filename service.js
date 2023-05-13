@@ -7,6 +7,19 @@ var gImgs = [
     { id: 3, url: './assets/img/3.jpg', keywords: ['c', 'b'] },
     { id: 4, url: './assets/img/4.jpg', keywords: ['c', 'b'] },
     { id: 5, url: './assets/img/5.jpg', keywords: ['c', 'b'] },
+    { id: 6, url: './assets/img/6.jpg', keywords: ['c', 'b'] },
+    { id: 7, url: './assets/img/7.jpg', keywords: ['c', 'b'] },
+    { id: 8, url: './assets/img/8.jpg', keywords: ['c', 'b'] },
+    { id: 9, url: './assets/img/9.jpg', keywords: ['c', 'b'] },
+    { id: 10, url: './assets/img/10.jpg', keywords: ['c', 'b'] },
+    { id: 11, url: './assets/img/11.jpg', keywords: ['c', 'b'] },
+    { id: 12, url: './assets/img/12.jpg', keywords: ['c', 'b'] },
+    { id: 13, url: './assets/img/13.jpg', keywords: ['c', 'b'] },
+    { id: 14, url: './assets/img/14.jpg', keywords: ['c', 'b'] },
+    { id: 15, url: './assets/img/15.jpg', keywords: ['c', 'b'] },
+    { id: 16, url: './assets/img/16.jpg', keywords: ['c', 'b'] },
+    { id: 17, url: './assets/img/17.jpg', keywords: ['c', 'b'] },
+    { id: 18, url: './assets/img/18.jpg', keywords: ['c', 'b'] },
 ]
 var gMeme = {
     selectedImgId: 5,
@@ -14,17 +27,21 @@ var gMeme = {
     lines: [
         {
             txt: 'Wenn ihr wollt',
-            size: 35,
+            size: 60,
             align: 'center',
             color: 'white',
-            stroke: 'black'
+            stroke: 'black',
+            posX: 250,
+            posY: 62.5,
         },
         {
             txt: 'ist es kein Märchen',
-            size: 25,
+            size: 40,
             align: 'center',
             color: 'white',
-            stroke: 'black'
+            stroke: 'black',
+            posX: 250,
+            posY: 437.5,
         }
     ]
 }
@@ -35,6 +52,11 @@ function getMeme() {
 
 function getImgs() {
     return gImgs
+}
+
+function getImgSrc() {
+    const imgIdx = gImgs.findIndex(img => img.id === gMeme['selectedImgId'])
+    return gImgs[imgIdx]['url']
 }
 
 function setLineTxt(txt) {
@@ -53,7 +75,7 @@ function setLineStrokeColor(color) {
 }
 
 function setImg(imgId) {
-    gMeme.selectedImgId = imgId
+    gMeme.selectedImgId = +imgId
 }
 
 function setFontIncrease() {
@@ -74,4 +96,15 @@ function setSwitchLineFocus() {
 
 function setAlignText(pos) {
     gMeme.lines[gMeme.selectedLineIdx].align = pos
+}
+
+function setLineToFocus(x, y) {
+    const lineNumToFocus = gMeme.lines.findIndex(line => {
+        return y > line.posY - line.size / 2 && y < line.posY + line.size / 2
+    })
+    if (lineNumToFocus === -1) {
+        return
+    } else {
+        gMeme.selectedLineIdx = lineNumToFocus
+    }
 }

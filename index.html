@@ -6,71 +6,79 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Page Title</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='./style/main.css'>
     <link rel='stylesheet' type='text/css' media='screen' href='./style/editor.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='./style/gallery.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='./style/main.css'>
 </head>
 
 <body onload="onInit()">
 
-    <section class="gallery hidden">
-        <section class="img-container"></section>
+    <section class="gallery">
+        <header>
+                <img class="logo" src="./assets/logo/LOGO.png" alt="">
+                <ul>
+                    <li onclick="showEditor()">Editor</li>
+                    <li class="pressed">Gallery</li>
+                    <li>Saved Memes</li>
+                    <li>About</li>
+                </ul>
+        </header>
+        
+        <section class="img-container">
+
+        </section>
     </section>
 
     <section class="editor">
-
         <header>
-            <nav>
                 <img class="logo" src="./assets/logo/LOGO.png" alt="">
                 <ul>
-                    <li><a href="#"></a>Gallery</li>
-                    <li class="pressed"><a href="#"></a>Editor</li>
-                    <li><a href="#"></a>Saved Memes</li>
-                    <li><a href="#"></a>About</li>
+                    <li class="pressed"></a>Editor</li>
+                    <li onclick="showGallery()">Gallery</li>
+                    <li>Saved Memes</li>
+                    <li>About</li>
                 </ul>
-                <!-- <div class="menu-icon" onclick="onMenuClick()"> -->
-                <!-- <span></span> -->
-                <!-- <span></span> -->
-                <!-- <span></span> -->
-                <!-- </div> -->
-            </nav>
         </header>
 
         <main>
-            <canvas id="canvas"></canvas>
+            <canvas id="canvas" onclick="onCanvasClick(event)"></canvas>
 
-            <section class="dashboard">
-                <input type="text" oninput="onUserType(event)">
-                <div class="square-button-container">
-                    <button class="square-button" onclick="onSwitchLine()"><img src="./assets/icon/switch-arrows.png"
+            <div class="dashboard-container">
+                
+                <div class="dashboard">
+                    <input class="grid-span-5" type="text" oninput="onUserType(event)">
+                    
+                    <button class="dashboard-button grid-span-2">New Image</button>
+                    <button class="dashboard-button" onclick="onSwitchLine()"><img src="./assets/icon/switch-arrows.png"
+                        alt=""></button>
+                        <button class="dashboard-button" onclick="onAddLine()"><img src="./assets/icon/add.png"
                             alt=""></button>
-                    <button class="square-button" onclick="onAddLine()"><img src="./assets/icon/add.png"
+                            <button class="dashboard-button"><img src="./assets/icon/trash.png" alt=""></button>
+                            <button class="dashboard-button" onclick="onIncreaseFont()"><img src="./assets/icon/increase-font.png"
+                                alt=""></button>
+                                <button class="dashboard-button" onclick="onDecreaseFont()"><img src="./assets/icon/decrease-font.png"
                             alt=""></button>
-                    <button class="square-button"><img src="./assets/icon/trash.png" alt=""></button>
-                    <button class="square-button" onclick="onIncreaseFont()"><img src="./assets/icon/increase-font.png"
+                    <button class="dashboard-button" onclick="onAlignTxt('left')"><img src="./assets/icon/align-left.png"
                             alt=""></button>
-                    <button class="square-button" onclick="onDecreaseFont()"><img src="./assets/icon/decrease-font.png"
-                            alt=""></button>
-                    <button class="square-button" onclick="onAlignTxt('left')"><img src="./assets/icon/align-left.png"
-                            alt=""></button>
-                    <button class="square-button" onclick="onAlignTxt('center')"><img
+                    <button class="dashboard-button" onclick="onAlignTxt('center')"><img
                             src="./assets/icon/align-center.png" alt=""></button>
-                    <button class="square-button" onclick="onAlignTxt('right')"><img src="./assets/icon/align-right.png"
+                    <button class="dashboard-button" onclick="onAlignTxt('right')"><img src="./assets/icon/align-right.png"
                             alt=""></button>
-                    <button class="square-button" onclick="showFillColorPalate()">
+                    <button class="dashboard-button" onclick="showFillColorPalate()">
                         <input type="color" class="fill" oninput="onChangeFillColor(event)">
                         <img src="./assets/icon/paint-brush.png" alt="">
                     </button>
-                    <button class="square-button" onclick="showStrokeColorPalate()">
+                    <button class="dashboard-button" onclick="showStrokeColorPalate()">
                         <input type="color" class="stroke" oninput="onChangeStrokeColor(event)">
                         <img src="./assets/icon/text-stroke.png" alt="">
                     </button>
+                    <button class="dashboard-button grid-span-2">Change Font</button>
+                    <button class="dashboard-button orange grid-span-2">Save</button>
+                    <button class="dashboard-button orange grid-span-2">Share</button>
+                    <button class="dashboard-button orange grid-span-2">Download</button>
+
                 </div>
-                <div class="download-bar">
-                    <button>font</button>
-                    <button>Share</button>
-                    <button>Download</button>
-                </div>
-            </section>
+            </div>
         </main>
 
 
@@ -83,7 +91,7 @@
     <section class="memes">
 
     </section>
-    <!-- <main class="memes hidden"> -->
+    <!-- <main class="memes"> -->
 
     <!-- </main> -->
 
