@@ -1,99 +1,137 @@
 'use strict'
 
+var gCanvas
+var gCtx
+var gStartPos
+const gTouchEvs = ['touchstart', 'touchmove', 'touchend']
+
 function onInit() {
-    window.addEventListener('resize', () => renderMeme())
-    
+    gCanvas = document.getElementById('canvas')
+    gCtx = gCanvas.getContext('2d')
     showEditor()
-    renderMeme()
+    addListeners()
     renderGallery()
+    renderMeme()
 }
 
 function renderMeme() {
     const img = new Image()
-    const elCanvas = document.getElementById('canvas')
-    const ctx = elCanvas.getContext('2d')
-    elCanvas.width = 500
-    elCanvas.height = 500
+    gCanvas.width = 500
+    gCanvas.height = 500
     const imgSrc = getImgSrc()
     const meme = getMeme()
-    const { selectedImgId, selectedLineIdx, lines } = meme
+    const { selectedLineIdx, lines } = meme
     img.src = imgSrc
-    
+
     img.onload = () => {
         let imgWidth = img.width
         let imgHeight = img.height
 
         const aspectRatio = imgWidth / imgHeight
 
-        if (imgWidth > elCanvas.width) {
-            imgWidth = elCanvas.width
+        if (imgWidth > gCanvas.width) {
+            imgWidth = gCanvas.width
             imgHeight = imgWidth / aspectRatio
         }
-        if (imgHeight > elCanvas.height) {
-            imgHeight = elCanvas.height
+        if (imgHeight > gCanvas.height) {
+            imgHeight = gCanvas.height
             imgWidth = imgHeight * aspectRatio
         }
 
-        const x = (elCanvas.width - imgWidth)
-        const y = (elCanvas.height - imgHeight)
+        const x = (gCanvas.width - imgWidth)
+        const y = (gCanvas.height - imgHeight)
 
-        ctx.drawImage(img, x, y, imgWidth, imgHeight)
-        renderFocus(ctx, selectedLineIdx, lines)
-        renderLine(ctx, lines[0], selectedLineIdx, elCanvas.height / 8)
-        renderLine(ctx, lines[1], selectedLineIdx, elCanvas.height * 7 / 8)
-        // renderLine(ctx, lines[2])
+        gCtx.drawImage(img, x, y, imgWidth, imgHeight)
+        renderFocus(selectedLineIdx, lines)
+        for (let i = 0; i < lines.length; i++) {
+            renderLine(lines[i])
+        }
         renderUserTxtInput(lines[selectedLineIdx])
     }
 }
 
-function renderLine(ctx, line, selectedLineIdx, pos = canvas.width / 2) {
-    const { size, color, txt, align, stroke } = line
+function renderLine(line) {
+    const { size, color, txt, align, stroke, pos } = line
 
-    ctx.font = `${size}px impact`
-    ctx.textBaseline = 'middle'
-    ctx.textAlign = align
-    ctx.fillStyle = color
-    ctx.strokeStyle = stroke
-    ctx.lineWidth = 2.5
-    // const posX = align === 'center' ? canvas.width / 2 : align === 'left' ? canvas.width / 50 : canvas.width * 49 / 50
-    let posX
-    if (align === 'center') {
-        posX = canvas.width / 2
-    } else if (align === 'left') {
-        posX = canvas.width / 50
-    } else if (align === 'right') {
-        posX = canvas.width * 49 / 50
-    } else {
-        // else
-    }
-    const posY = pos
+    gCtx.font = `${size}px impact`
+    gCtx.textAlign = align
+    gCtx.fillStyle = color
+    gCtx.strokeStyle = stroke
+    gCtx.lineWidth = 2.5
+    gCtx.textBaseline = 'middle'
 
-    ctx.strokeText(txt, posX, posY)
-    ctx.fillText(txt, posX, posY)
+    gCtx.strokeText(txt, pos.x, pos.y)
+    gCtx.fillText(txt, pos.x, pos.y)
 }
 
-function renderFocus(ctx, lineIdx, lines) {
-    
-    const rectWidth = canvas.width
-    const rectHeight = canvas.height
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.3)'
-    const posX = 0
-    let posY 
-    if (lineIdx === 0) {
-        posY = rectHeight / 8 - lines[lineIdx].size / 2
-    } else if (lineIdx === 1) {
-        posY = rectHeight * 7 / 8 - lines[lineIdx].size / 2
-    }
+function renderFocus(lineIdx, lines) {
+    const rectWidth = gCanvas.width
+    gCtx.fillStyle = 'rgba(0, 0, 0, 0.3)'
+    let posX = 0
+    let posY = lines[lineIdx].pos.y - lines[lineIdx].size / 2
+    let rectHeight = lines[lineIdx].size
 
-    ctx.fillRect(posX, posY, rectWidth, lines[lineIdx].size)
+    gCtx.fillRect(posX, posY, rectWidth, rectHeight)
 }
 
-function onCanvasClick(event) {
-    console.log(event);
-    let x = event.offsetX
-    let y = event.offsetY
-    setLineToFocus(x, y)
+function addListeners() {
+    window.addEventListener('resize', () => renderMeme())
+    addMouseListeners()
+    addTouchListeners()
+}
+
+function addMouseListeners() {
+    gCanvas.addEventListener('mousemove', onMove)
+    gCanvas.addEventListener('mousedown', onDown)
+    gCanvas.addEventListener('mouseup', onUp)
+}
+
+function addTouchListeners() {
+    gCanvas.addEventListener('touchmove', onMove)
+    gCanvas.addEventListener('touchstart', onDown)
+    gCanvas.addEventListener('touchend', onUp)
+}
+
+function onDown(ev) {
+    const pos = getEvPos(ev)
+    if (getLineClicked(pos) < 0) return
+    setLineDrag(true)
+    gStartPos = pos
+    // document.body.style.cursor = 'grabbing'
     renderMeme()
+}
+
+function onMove(ev) {
+    const { lines, selectedLineIdx } = getMeme()
+    if (!lines[selectedLineIdx].isDragged) return
+    const pos = getEvPos(ev)
+    const dx = pos.x - gStartPos.x
+    const dy = pos.y - gStartPos.y
+    moveLine(dx, dy)
+    gStartPos = pos
+    renderMeme()
+}
+
+function onUp() {
+    setLineDrag(false)
+    // document.body.style.cursor = 'grab'
+}
+
+function getEvPos(ev) {
+    var pos = {
+        x: ev.offsetX,
+        y: ev.offsetY
+    }
+    // const gTouchEvs = ['touchstart', 'touchmove', 'touchend']
+    // if (gTouchEvs.includes(ev.type)) {
+    //     ev.preventDefault()
+    //     ev = ev.changedTouches[0]
+    //     pos = {
+    //         x: ev.pageX - ev.target.offsetLeft,
+    //         y: ev.pageY - ev.target.offsetTop
+    //     }
+    // }
+    return pos
 }
 
 function showGallery() {
@@ -177,7 +215,8 @@ function onDecreaseFont() {
 }
 
 function onAddLine() {
-    console.log('add line')
+    addLine()
+    renderMeme()
 }
 
 function onSwitchLine() {
@@ -185,7 +224,13 @@ function onSwitchLine() {
     renderMeme()
 }
 
-function onAlignTxt(pos) {
-    setAlignText(pos)
+function onAlignTxt(align) {
+    setAlignText(align)
+    renderMeme()
+}
+
+function onDeleteLine() {
+    deleteLine()
+    setSwitchLineFocus()
     renderMeme()
 }

@@ -41,7 +41,7 @@
         </header>
 
         <main>
-            <canvas id="canvas" onclick="onCanvasClick(event)"></canvas>
+            <canvas id="canvas"></canvas>
 
             <div class="dashboard-container">
                 
@@ -53,7 +53,7 @@
                         alt=""></button>
                         <button class="dashboard-button" onclick="onAddLine()"><img src="./assets/icon/add.png"
                             alt=""></button>
-                            <button class="dashboard-button"><img src="./assets/icon/trash.png" alt=""></button>
+                            <button class="dashboard-button" onclick="onDeleteLine()"><img src="./assets/icon/trash.png" alt=""></button>
                             <button class="dashboard-button" onclick="onIncreaseFont()"><img src="./assets/icon/increase-font.png"
                                 alt=""></button>
                                 <button class="dashboard-button" onclick="onDecreaseFont()"><img src="./assets/icon/decrease-font.png"
@@ -72,7 +72,6 @@
                         <input type="color" class="stroke" oninput="onChangeStrokeColor(event)">
                         <img src="./assets/icon/text-stroke.png" alt="">
                     </button>
-                    <button class="dashboard-button grid-span-2">Change Font</button>
                     <button class="dashboard-button orange grid-span-2">Save</button>
                     <button class="dashboard-button orange grid-span-2">Share</button>
                     <button class="dashboard-button orange grid-span-2">Download</button>

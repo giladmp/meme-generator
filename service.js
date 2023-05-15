@@ -28,20 +28,20 @@ var gMeme = {
         {
             txt: 'Wenn ihr wollt',
             size: 60,
-            align: 'center',
             color: 'white',
             stroke: 'black',
-            posX: 250,
-            posY: 62.5,
+            pos: { x: 250, y: 62.5 },
+            isDragged: false,
+            align: 'center'
         },
         {
             txt: 'ist es kein Märchen',
             size: 40,
-            align: 'center',
             color: 'white',
             stroke: 'black',
-            posX: 250,
-            posY: 437.5,
+            pos: { x: 250, y: 437.5 },
+            isDragged: false,
+            align: 'center'
         }
     ]
 }
@@ -94,17 +94,56 @@ function setSwitchLineFocus() {
     }
 }
 
-function setAlignText(pos) {
-    gMeme.lines[gMeme.selectedLineIdx].align = pos
+function setAlignText(align) {
+    switch (align) {
+        case 'left':
+            gMeme.lines[gMeme.selectedLineIdx].pos.x = 500 / 50
+            break
+        case 'center':
+            gMeme.lines[gMeme.selectedLineIdx].pos.x = 500 / 2
+            break
+        case 'right':
+            gMeme.lines[gMeme.selectedLineIdx].pos.x = 500 * 49 / 50
+            break
+    }
+    gMeme.lines[gMeme.selectedLineIdx].align = align
+
 }
 
-function setLineToFocus(x, y) {
-    const lineNumToFocus = gMeme.lines.findIndex(line => {
-        return y > line.posY - line.size / 2 && y < line.posY + line.size / 2
+function setLineDrag(isDrag) {
+    gMeme.lines[gMeme.selectedLineIdx].isDragged = isDrag
+}
+
+function getLineClicked(clickedPos) {
+    const lineClicked = gMeme.lines.findIndex(line => {
+        return (clickedPos.y > line.pos.y - line.size / 2) &&
+            (clickedPos.y < line.pos.y + line.size / 2)
     })
-    if (lineNumToFocus === -1) {
-        return
-    } else {
-        gMeme.selectedLineIdx = lineNumToFocus
+    if (lineClicked >= 0) gMeme.selectedLineIdx = lineClicked
+    return lineClicked
+}
+
+function moveLine(dx, dy) {
+    gMeme.lines[gMeme.selectedLineIdx].pos.x += dx
+    gMeme.lines[gMeme.selectedLineIdx].pos.y += dy
+}
+
+function addLine() {
+    const line =  {
+        txt: 'Lorem ipsum',
+        size: 50,
+        color: 'white',
+        stroke: 'black',
+        pos: { x: 250, y: 250 },
+        isDragged: false,
+        align: 'center'
+    }
+    gMeme.lines.push(line)
+    gMeme.selectedLineIdx = gMeme.lines.length - 1
+}
+
+function deleteLine() {
+    if (gMeme.lines.length > 1) {
+        gMeme.lines.splice([gMeme.selectedLineIdx], 1)
     }
 }
