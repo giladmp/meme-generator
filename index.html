@@ -15,15 +15,15 @@
 
     <section class="gallery">
         <header>
-                <img class="logo" src="./assets/logo/LOGO.png" alt="">
-                <ul>
-                    <li onclick="showEditor()">Editor</li>
-                    <li class="pressed">Gallery</li>
-                    <li>Saved Memes</li>
-                    <li>About</li>
-                </ul>
+            <img class="logo" src="./assets/logo/LOGO.png" alt="">
+            <ul>
+                <li onclick="showEditor()">Editor</li>
+                <li class="pressed">Gallery</li>
+                <li>Saved Memes</li>
+                <li>About</li>
+            </ul>
         </header>
-        
+
         <section class="img-container">
 
         </section>
@@ -31,59 +31,59 @@
 
     <section class="editor">
         <header>
-                <img class="logo" src="./assets/logo/LOGO.png" alt="">
-                <ul>
-                    <li class="pressed"></a>Editor</li>
-                    <li onclick="showGallery()">Gallery</li>
-                    <li>Saved Memes</li>
-                    <li>About</li>
-                </ul>
+            <img class="logo" src="./assets/logo/LOGO.png" alt="">
+            <ul>
+                <li class="pressed"></a>Editor</li>
+                <li onclick="showGallery()">Gallery</li>
+                <li>Saved Memes</li>
+                <li>About</li>
+            </ul>
         </header>
 
         <main>
             <canvas id="canvas"></canvas>
 
             <div class="dashboard-container">
-                
+
                 <div class="dashboard">
-                    <input class="grid-span-5" type="text" oninput="onUserType(event)">
-                    
+                    <input class="grid-span-5" id="line-input" type="text" oninput="onUserType(event)">
+
                     <button class="dashboard-button grid-span-2">New Image</button>
                     <button class="dashboard-button" onclick="onSwitchLine()"><img src="./assets/icon/switch-arrows.png"
-                        alt=""></button>
-                        <button class="dashboard-button" onclick="onAddLine()"><img src="./assets/icon/add.png"
                             alt=""></button>
-                            <button class="dashboard-button" onclick="onDeleteLine()"><img src="./assets/icon/trash.png" alt=""></button>
-                            <button class="dashboard-button" onclick="onIncreaseFont()"><img src="./assets/icon/increase-font.png"
-                                alt=""></button>
-                                <button class="dashboard-button" onclick="onDecreaseFont()"><img src="./assets/icon/decrease-font.png"
+                    <button class="dashboard-button" onclick="onAddLine()"><img src="./assets/icon/add.png"
                             alt=""></button>
-                    <button class="dashboard-button" onclick="onAlignTxt('left')"><img src="./assets/icon/align-left.png"
+                    <button class="dashboard-button" onclick="onDeleteLine(this)"><img src="./assets/icon/trash.png"
                             alt=""></button>
-                    <button class="dashboard-button" onclick="onAlignTxt('center')"><img
+                    <button class="dashboard-button" onclick="onIncreaseFont(this)"><img
+                            src="./assets/icon/increase-font.png" alt=""></button>
+                    <button class="dashboard-button" onclick="onDecreaseFont(this)"><img
+                            src="./assets/icon/decrease-font.png" alt=""></button>
+                    <button class="dashboard-button" onclick="onAlignTxt('left', this)"><img
+                            src="./assets/icon/align-left.png" alt=""></button>
+                    <button class="dashboard-button" onclick="onAlignTxt('center', this)"><img
                             src="./assets/icon/align-center.png" alt=""></button>
-                    <button class="dashboard-button" onclick="onAlignTxt('right')"><img src="./assets/icon/align-right.png"
-                            alt=""></button>
-                    <button class="dashboard-button" onclick="showFillColorPalate()">
+                    <button class="dashboard-button" onclick="onAlignTxt('right', this)"><img
+                            src="./assets/icon/align-right.png" alt=""></button>
+                    <button class="dashboard-button" onclick="showFillColorPalate(this)">
                         <input type="color" class="fill" oninput="onChangeFillColor(event)">
                         <img src="./assets/icon/paint-brush.png" alt="">
                     </button>
-                    <button class="dashboard-button" onclick="showStrokeColorPalate()">
+                    <button class="dashboard-button" onclick="showStrokeColorPalate(this)">
                         <input type="color" class="stroke" oninput="onChangeStrokeColor(event)">
                         <img src="./assets/icon/text-stroke.png" alt="">
                     </button>
                     <button class="dashboard-button orange grid-span-2">Save</button>
                     <button class="dashboard-button orange grid-span-2">Share</button>
-                    <button class="dashboard-button orange grid-span-2">Download</button>
+                    <a class="orange grid-span-2 download" href="#" onclick="downloadMeme(this)"
+                        download="">Download</a>
 
                 </div>
             </div>
         </main>
 
 
-        <footer>
 
-        </footer>
 
     </section>
 

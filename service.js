@@ -22,7 +22,7 @@ var gImgs = [
     { id: 18, url: './assets/img/18.jpg', keywords: ['c', 'b'] },
 ]
 var gMeme = {
-    selectedImgId: 5,
+    selectedImgId: 7,
     selectedLineIdx: 0,
     lines: [
         {
@@ -111,7 +111,9 @@ function setAlignText(align) {
 }
 
 function setLineDrag(isDrag) {
-    gMeme.lines[gMeme.selectedLineIdx].isDragged = isDrag
+    if (gMeme.selectedLineIdx >= 0) {
+        gMeme.lines[gMeme.selectedLineIdx].isDragged = isDrag
+    }
 }
 
 function getLineClicked(clickedPos) {
@@ -142,8 +144,18 @@ function addLine() {
     gMeme.selectedLineIdx = gMeme.lines.length - 1
 }
 
-function deleteLine() {
+function deleteLine(el) {
     if (gMeme.lines.length > 1) {
         gMeme.lines.splice([gMeme.selectedLineIdx], 1)
+    } else {
+        return blinkButtonRed(el)
     }
+}
+
+function setUnchooseLine() {
+    gMeme.selectedLineIdx = -1
+}
+
+function isLineChosen() {
+    return gMeme.selectedLineIdx >= 0
 }

@@ -2,52 +2,38 @@
 
 var gCanvas
 var gCtx
+var gImg
 var gStartPos
 const gTouchEvs = ['touchstart', 'touchmove', 'touchend']
 
 function onInit() {
     gCanvas = document.getElementById('canvas')
     gCtx = gCanvas.getContext('2d')
-    showEditor()
+    drawImgFromLocal()
     addListeners()
     renderGallery()
-    renderMeme()
+    showEditor()
+}
+
+function drawImgFromLocal() {
+    gImg = new Image()
+    gImg.src = getImgSrc()
+    gCanvas.width = 500
+    gCanvas.height = 500
+    gImg.onload = () => {
+        gCtx.drawImage(gImg, 0, 0, gCanvas.width, gCanvas.height)
+        renderMeme()
+    }
 }
 
 function renderMeme() {
-    const img = new Image()
-    gCanvas.width = 500
-    gCanvas.height = 500
-    const imgSrc = getImgSrc()
-    const meme = getMeme()
-    const { selectedLineIdx, lines } = meme
-    img.src = imgSrc
-
-    img.onload = () => {
-        let imgWidth = img.width
-        let imgHeight = img.height
-
-        const aspectRatio = imgWidth / imgHeight
-
-        if (imgWidth > gCanvas.width) {
-            imgWidth = gCanvas.width
-            imgHeight = imgWidth / aspectRatio
-        }
-        if (imgHeight > gCanvas.height) {
-            imgHeight = gCanvas.height
-            imgWidth = imgHeight * aspectRatio
-        }
-
-        const x = (gCanvas.width - imgWidth)
-        const y = (gCanvas.height - imgHeight)
-
-        gCtx.drawImage(img, x, y, imgWidth, imgHeight)
-        renderFocus(selectedLineIdx, lines)
-        for (let i = 0; i < lines.length; i++) {
-            renderLine(lines[i])
-        }
-        renderUserTxtInput(lines[selectedLineIdx])
+    gCtx.drawImage(gImg, 0, 0, gCanvas.width, gCanvas.height)
+    const { selectedLineIdx, lines } = getMeme()
+    renderFocus(selectedLineIdx, lines)
+    for (let i = 0; i < lines.length; i++) {
+        renderLine(lines[i])
     }
+    renderUserTxtInput(lines[selectedLineIdx])
 }
 
 function renderLine(line) {
@@ -65,6 +51,7 @@ function renderLine(line) {
 }
 
 function renderFocus(lineIdx, lines) {
+    if (lineIdx < 0) return
     const rectWidth = gCanvas.width
     gCtx.fillStyle = 'rgba(0, 0, 0, 0.3)'
     let posX = 0
@@ -94,15 +81,31 @@ function addTouchListeners() {
 
 function onDown(ev) {
     const pos = getEvPos(ev)
-    if (getLineClicked(pos) < 0) return
+    if (getLineClicked(pos) < 0) {
+        setUnchooseLine()
+        isInputDisable(true)
+        renderMeme()
+        return
+    } 
     setLineDrag(true)
+    isInputDisable(false)
     gStartPos = pos
     // document.body.style.cursor = 'grabbing'
     renderMeme()
 }
 
+function isInputDisable(isDisable) {
+    const input = document.getElementById("line-input")
+    if (isDisable) {
+        input.disabled = true
+    } else if (!isDisable) {
+        input.disabled = false
+    }
+}
+
 function onMove(ev) {
     const { lines, selectedLineIdx } = getMeme()
+    if (!lines[selectedLineIdx]) return
     if (!lines[selectedLineIdx].isDragged) return
     const pos = getEvPos(ev)
     const dx = pos.x - gStartPos.x
@@ -158,8 +161,12 @@ function hideAllPages() {
 
 function renderUserTxtInput(line) {
     const elText = document.querySelector('.dashboard input')
-    // elText.value = lines[selectedLineIdx].text
-    elText.value = line.txt
+    if (line) {
+        // elText.value = lines[selectedLineIdx].text
+        elText.value = line.txt
+    } else {
+        elText.value = ""
+    }
 }
 
 function onUserType(event) {
@@ -182,12 +189,20 @@ function onUserType(event) {
 //     elMemes.classList.toggle('hidden', i === 1 || i === 2)
 // }
 
-function showFillColorPalate() {
+function showFillColorPalate(el) {
+    if (!isLineChosen()) {
+        blinkButtonRed(el)
+        return
+    }
     const colorInput = document.querySelector('button .fill')
     colorInput.click()
 }
 
-function showStrokeColorPalate() {
+function showStrokeColorPalate(el) {
+    if (!isLineChosen()) {
+        blinkButtonRed(el)
+        return
+    }
     const colorInput = document.querySelector('button .stroke')
     colorInput.click()
 }
@@ -204,33 +219,66 @@ function onChangeStrokeColor(event) {
     renderMeme()
 }
 
-function onIncreaseFont() {
+function onIncreaseFont(el) {
+    if (!isLineChosen()) {
+        blinkButtonRed(el)
+        return
+    }
     setFontIncrease()
     renderMeme()
 }
 
-function onDecreaseFont() {
+function onDecreaseFont(el) {
+    if (!isLineChosen()) {
+        blinkButtonRed(el)
+        return
+    }
     setFontDecrease()
     renderMeme()
 }
 
+function blinkButtonRed(el) {
+    el.style.backgroundColor = 'red'
+    setInterval(() => {
+        el.style.backgroundColor = 'white' 
+    }, 200)
+}
+
 function onAddLine() {
+    isInputDisable(false)
     addLine()
     renderMeme()
 }
 
 function onSwitchLine() {
+    isInputDisable(false)
     setSwitchLineFocus()
     renderMeme()
 }
 
-function onAlignTxt(align) {
+function onAlignTxt(align, el) {
+    if (!isLineChosen()) {
+        blinkButtonRed(el)
+        return
+    }
     setAlignText(align)
     renderMeme()
 }
 
-function onDeleteLine() {
-    deleteLine()
+function onDeleteLine(el) {
+    if (!isLineChosen()) {
+        blinkButtonRed(el)
+        return
+    }
+    isInputDisable(false)
+    deleteLine(el)
     setSwitchLineFocus()
     renderMeme()
 }
+
+function downloadMeme(elLink) {
+    const data = gCanvas.toDataURL()
+    elLink.href = data
+    elLink.download = 'my-meme.jpg'
+}
+
