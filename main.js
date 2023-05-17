@@ -9,13 +9,13 @@ const gTouchEvs = ['touchstart', 'touchmove', 'touchend']
 function onInit() {
     gCanvas = document.getElementById('canvas')
     gCtx = gCanvas.getContext('2d')
-    drawImgFromLocal()
+    drawImage()
     addListeners()
     renderGallery()
     showEditor()
 }
 
-function drawImgFromLocal() {
+function drawImage() {
     gImg = new Image()
     gImg.src = getImgSrc()
     gCanvas.width = 500
@@ -86,7 +86,7 @@ function onDown(ev) {
         isInputDisable(true)
         renderMeme()
         return
-    } 
+    }
     setLineDrag(true)
     isInputDisable(false)
     gStartPos = pos
@@ -147,6 +147,14 @@ function showEditor() {
     hideAllPages()
     const elEditor = document.querySelector('.editor')
     elEditor.classList.remove('hidden')
+}
+
+function showSavedMemes() {
+    hideAllPages()
+    const elMemes = document.querySelector('.memes')
+    elMemes.classList.remove('hidden')
+    getSavedMemes()
+    renderSavedMemes()
 }
 
 function hideAllPages() {
@@ -240,7 +248,7 @@ function onDecreaseFont(el) {
 function blinkButtonRed(el) {
     el.style.backgroundColor = 'red'
     setInterval(() => {
-        el.style.backgroundColor = 'white' 
+        el.style.backgroundColor = 'white'
     }, 200)
 }
 
@@ -282,3 +290,8 @@ function downloadMeme(elLink) {
     elLink.download = 'my-meme.jpg'
 }
 
+function onSaveMeme() {
+    saveMemeToStorage(gCanvas)
+
+    //   showSuccessMsg()
+}

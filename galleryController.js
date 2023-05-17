@@ -13,7 +13,7 @@ function renderGallery() {
 
 function onSelectImg(imgId) {
     setImg(imgId)
-    drawImgFromLocal()
+    drawImage()
     renderMeme()
     showEditor()
 }

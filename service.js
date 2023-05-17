@@ -1,5 +1,6 @@
 'use strict'
 
+var gSavedMemes = []
 var gKeywordSearchCountMap = { 'funny': 12, 'cat': 16, 'baby': 2 }
 var gImgs = [
     { id: 1, url: './assets/img/1.jpg', keywords: ['funny', 'cat'] },
@@ -131,7 +132,7 @@ function moveLine(dx, dy) {
 }
 
 function addLine() {
-    const line =  {
+    const line = {
         txt: 'Lorem ipsum',
         size: 50,
         color: 'white',
@@ -158,4 +159,15 @@ function setUnchooseLine() {
 
 function isLineChosen() {
     return gMeme.selectedLineIdx >= 0
+}
+
+function saveMemeToStorage(canvas) {
+    const data = canvas.toDataURL()
+    gSavedMemes.push(data)
+    saveToStorage('memesDB', gSavedMemes)
+}
+
+function getSavedMemes() {
+    const memes = loadFromStorage('memesDB')
+    return memes
 }

@@ -19,7 +19,7 @@
             <ul>
                 <li onclick="showEditor()">Editor</li>
                 <li class="pressed">Gallery</li>
-                <li>Saved Memes</li>
+                <li onclick="showSavedMemes()">Saved Memes</li>
                 <li>About</li>
             </ul>
         </header>
@@ -35,7 +35,7 @@
             <ul>
                 <li class="pressed"></a>Editor</li>
                 <li onclick="showGallery()">Gallery</li>
-                <li>Saved Memes</li>
+                <li onclick="showSavedMemes()">Saved Memes</li>
                 <li>About</li>
             </ul>
         </header>
@@ -73,7 +73,7 @@
                         <input type="color" class="stroke" oninput="onChangeStrokeColor(event)">
                         <img src="./assets/icon/text-stroke.png" alt="">
                     </button>
-                    <button class="dashboard-button orange grid-span-2">Save</button>
+                    <button class="dashboard-button orange grid-span-2" onclick="onSaveMeme()">Save</button>
                     <button class="dashboard-button orange grid-span-2">Share</button>
                     <a class="orange grid-span-2 download" href="#" onclick="downloadMeme(this)"
                         download="">Download</a>
@@ -88,6 +88,20 @@
     </section>
 
     <section class="memes">
+        <header>
+            <img class="logo" src="./assets/logo/LOGO.png" alt="">
+            <ul>
+                <li onclick="showEditor()"></a>Editor</li>
+                <li onclick="showGallery()">Gallery</li>
+                <li class="pressed">Saved Memes</li>
+                <li onclick="showAbout()">About</li>
+            </ul>
+        </header>
+
+        <div class="canvases-continer">
+            <canvas id="canvas1" width="150", height="150"></canvas>
+            <canvas id="canvas2" width="150", height="150"></canvas>
+        </div>
 
     </section>
     <!-- <main class="memes"> -->
@@ -95,9 +109,11 @@
     <!-- </main> -->
 
 
+    <script src='storage.service.js'></script>
     <script src='service.js'></script>
     <script src='main.js'></script>
     <script src='galleryController.js'></script>
+    <script src='Memes.controller.js'></script>
 </body>
 
 </html>
